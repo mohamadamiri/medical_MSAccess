@@ -80,12 +80,13 @@ public class MainPage extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		JButton b=(JButton)e.getSource();
 		if(b==companies){
-			cp = new CompanyPage(this,myConnect);
-			this.setVisible(false);
+			new Visit(this, myConnect,"مشخصات فردی");
+			//cp = new CompanyPage(this,myConnect);
+			//this.setVisible(false);
 		}
 		else if(b==employeeInformation){
-			new UserPage(this, myConnect);
-
+			//new UserPage(this, myConnect);
+			new Visit(this, myConnect,"آزمایش پارا کلینیکی");
 		}
 		else if(b==employeemedical){
 			JFileChooser chooser = new JFileChooser();

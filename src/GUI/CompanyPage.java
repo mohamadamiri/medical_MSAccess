@@ -38,7 +38,7 @@ public class CompanyPage extends JFrame implements ActionListener , Printable {
 	String[][] ob;
 	TextField tfs;
 	JLabel name;
-	String[] columnNames ={"نام شرکت" , "نام مدیر"};
+	String[] columnNames ;
 	Font font=new Font("B Nazanin", Font.PLAIN, 25);
 	DefaultTableModel model;
 	JScrollPane jsp;
@@ -53,7 +53,7 @@ public class CompanyPage extends JFrame implements ActionListener , Printable {
 		c=myConnect;
 		
 		
-		
+		columnNames=c.columnGetter("Company");
 		ob= myConnect.companyGetter("select * from Company");
 		jf.setVisible(false);
 		
@@ -176,11 +176,7 @@ public class CompanyPage extends JFrame implements ActionListener , Printable {
 			
 		}
 		else if(b==graph){
-			List<Double> scores=new ArrayList<Double>();
-			for(int i=0;i<ob.length;i++){
-				scores.add(Double.parseDouble(ob[i][2]));
-			}
-			GraphPanel.createAndShowGui(scores);
+			//new Visit(this, c);
 		}
 		else if(b==addCompany){
 			new AddCompany(c,table);

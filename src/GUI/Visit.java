@@ -18,10 +18,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import main.Connect;
 
-public class UserPage extends JFrame implements ActionListener{
+public class Visit extends JFrame implements ActionListener{
 	JButton graph,search;
 	MyTable table;
 	JFrame jf;
@@ -30,11 +31,13 @@ public class UserPage extends JFrame implements ActionListener{
 	TextField tfs,tfg;
 	JLabel name;
 	String[] columnNames ;//={"نام" , "قند" , "چربی" , "سال معاینه"};
-	Font font=new Font("B Nazanin", Font.PLAIN, 25);
+	//Font font=new Font("B Nazanin", Font.PLAIN, 25);
 	DefaultTableModel model;
 	JScrollPane jsp;
-	public UserPage(JFrame jf,Connect myConnect) {
-		super("اعضا");
+	String dbt;
+	public Visit(JFrame jf,Connect myConnect,String dbt) {
+		super(dbt);
+		this.dbt=dbt;
 		this.jf = jf;
 		c=myConnect;
 		Dimension d = getToolkit().getScreenSize();
@@ -42,32 +45,35 @@ public class UserPage extends JFrame implements ActionListener{
 		setLocation((d.width-1280)/2,(d.height-720)/2);
 		setLayout(null);
 		setVisible(true);
-		ob= myConnect.userGetter("select * from User ORDER BY [سال معاینه] ASC" , 4);
+		columnNames=myConnect.columnGetter(dbt);
+		ob= myConnect.userGetter("select * from "+dbt , columnNames.length);
 		jf.setVisible(false);
-		columnNames=myConnect.columnGetter("User");
+		
 		table = new MyTable(ob, columnNames);
 		model = (DefaultTableModel)table.getModel();
-		table.setSize(400, 650);
-		table.setLocation(700, 50);
+		//table.setSize(600, 650);
+		table.setLocation(500, 50);
 		table.setBackground(new Color(235,235,235));
-		table.setFont(font);
-		table.getTableHeader().setFont(font);
+		//table.setFont(font);
+		//table.getTableHeader().setFont(font);
 
 		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 		rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
-		table.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
-		table.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
-		table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
-		table.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
 		
 		table.setRowHeight(40);
-		getContentPane().add(table);
-		
+		//getContentPane().add(table);
+		TableColumn column;
+		for(int i=0;i<table.getColumnCount();i++){
+			column = table.getColumnModel().getColumn(i);
+			column.setPreferredWidth(100);
+			column.setCellRenderer(rightRenderer);
+		}
+			
 		jsp=new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		table.setPreferredScrollableViewportSize(new Dimension(300, 200));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		jsp.setSize(400, 650);
-		jsp.setLocation(700, 50);
+		jsp.setSize(800, 500);
+		jsp.setLocation(300, 50);
 		getContentPane().add(jsp,BorderLayout.CENTER);
 		
 		tfs=new TextField();
@@ -119,17 +125,17 @@ public class UserPage extends JFrame implements ActionListener{
 			String s=tfs.getText();
 			if(!s.isEmpty()){
 				//ob=null;
-				
-				ob=c.userGetter("select * from User WHERE [نام]='"+s+"' ORDER BY [سال معاینه] ASC" , 4);
+				int l=table.getColumnCount();
+				ob=c.userGetter("select * from "+dbt+" WHERE [نام]='"+s+"'" , l);
 				if(ob.length==0)
 					JOptionPane.showMessageDialog(null, "cannot find!!");
 				table.ChangeData(ob);
 				DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 				rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
-				table.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
-				table.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
-				table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
-				table.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+				for(int i=0;i<l;i++){
+					table.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);
+					table.getColumnModel().getColumn(i).setPreferredWidth(100);
+				}
 			}
 			else
 				JOptionPane.showMessageDialog(null, "the text field is empty!");
