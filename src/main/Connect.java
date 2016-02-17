@@ -1,9 +1,14 @@
 package main;
 
+import java.awt.List;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+
+import net.ucanaccess.complex.SingleValue;
+import net.ucanaccess.jdbc.UcanaccessSQLException;
 public class Connect{
 
      Connection  con = null;
@@ -72,7 +77,18 @@ public class Connect{
                  s[2]=rs.getString("چربی");
                  s[3]=rs.getString("سال معاینه");*/
             	 for(int h=1;h<l;h++){
-            		 s[h-1]=rs.getString(h+1);
+            		 //System.out.println(h);
+            		 try{
+            			 s[h-1]=rs.getString(h+1);
+            		 }
+            		 catch(UcanaccessSQLException e){
+            			 net.ucanaccess.complex.SingleValue[] ss=(SingleValue[]) rs.getObject(h+1);
+            			 String st="";
+            			 for(int j=0;j<ss.length;j++){
+            				 st+=ss[j].getValue()+";";
+            			 }
+            			 s[h-1]=st;
+            		 }
             	 }
                  str.add(s);
              }
