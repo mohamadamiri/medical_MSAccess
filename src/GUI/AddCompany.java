@@ -1,7 +1,6 @@
 package GUI;
 
 
-import javax.swing.JFrame;
 
 import main.Connect;
 
@@ -16,7 +15,10 @@ import javax.swing.JButton;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class AddCompany extends JDialog implements ActionListener{
-
+	private static final long serialVersionUID = 1L;
+	
+	
+	
 	private JTextField companyName;
 	private JTextField managerName;
 	private JTextField companyAddress;
