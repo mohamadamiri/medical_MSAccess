@@ -30,13 +30,11 @@ public class Connect{
      }
      
      public  synchronized String[][] companyGetter(String sql){
-//    	 CreateConnection();
     	 Vector<String[]> str=new Vector<String[]>();
     	 try
          {
-             //con = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/ASUS/Documents/testdb.accdb", "", "");
              Statement stmt = con.createStatement();
-             rs = stmt.executeQuery(sql);
+             rs=stmt.executeQuery(sql);
              while (rs.next())
              {
             	 String[] s=new String[2];
@@ -49,7 +47,8 @@ public class Connect{
          }
          catch (SQLException ex)
          {
-        	 JOptionPane.showMessageDialog(null, ex.toString());
+        	 //JOptionPane.showMessageDialog(null, ex.toString());
+        	 ex.printStackTrace();
          }
        String[][] obj=new String[str.size()][2];
     	 for(int i=0;i<str.size();i++){
@@ -96,6 +95,7 @@ public class Connect{
          }
          catch (SQLException ex)
          {
+        	 JOptionPane.showMessageDialog(null, ex.toString());
              ex.printStackTrace();
          }
        String[][] obj=new String[str.size()][l-1];
@@ -104,6 +104,44 @@ public class Connect{
     		 obj[i][h]=str.elementAt(i)[h];
 
     	 return obj;
+     }
+     
+     public  synchronized Vector<String> searchGetter(String sql , int l){
+    	 Vector<String> s =new Vector<String>();
+    	 //String[] s=new String[l-1];
+    	 try
+         {
+             Statement stmt = con.createStatement();
+             rs = stmt.executeQuery(sql);
+             while (rs.next())
+             {
+            	 
+            	 for(int h=1;h<l;h++){
+            		 try{
+            			 //s[h-1]=rs.getString(h+1);
+            			 s.add(rs.getString(h+1));
+            		 }
+            		 catch(UcanaccessSQLException e){
+            			 net.ucanaccess.complex.SingleValue[] ss=(SingleValue[]) rs.getObject(h+1);
+            			 String st="";
+            			 for(int j=0;j<ss.length;j++){
+            				 st+=ss[j].getValue()+";";
+            			 }
+            			 //s[h-1]=st;
+            			 s.add(st);
+            		 }
+            	 }
+                 
+             }
+           
+         }
+         catch (SQLException ex)
+         {
+        	 JOptionPane.showMessageDialog(null, ex.toString());
+             ex.printStackTrace();
+         }
+
+    	 return s;
      }
      
      public  synchronized void companySetter(String sql){
@@ -149,6 +187,49 @@ public class Connect{
              ex.printStackTrace();
          }
     	 return str;
+     }
+     
+     public Vector<String> columnGetterAll(String table){
+    	 Vector<String> str = null;
+    	 try
+         {
+             Statement stmt = con.createStatement();
+             
+             rs=stmt.executeQuery("SELECT * FROM "+table);
+             ResultSetMetaData metadata = rs.getMetaData();
+           
+             int columnCount = metadata.getColumnCount();
+             str=new Vector<String>();             
+             for (int i=2; i<=columnCount; i++) {
+            	 str.add(metadata.getColumnName(i));
+             }
+         }
+         catch (SQLException ex)
+         {
+             ex.printStackTrace();
+         }
+    	 return str;
+     }
+     
+     public int columnCount(String table){
+    	 
+             Statement stmt;
+             int columncount = 0;
+			try {
+				stmt = con.createStatement();
+				rs=stmt.executeQuery("SELECT * FROM "+table);
+	             //select column_name from information_schema.columns where [table_name]='Company'
+	             ResultSetMetaData metadata = rs.getMetaData();
+	           
+	             columncount = metadata.getColumnCount();
+	             columncount--;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+             
+             
+             return columncount;
      }
 
 	public void CreateConnection() {

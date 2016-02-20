@@ -15,7 +15,7 @@ import main.FileWrite;
 
 public class MainPage extends JFrame implements ActionListener{
 	JButton companies,employeeInformation,employeemedical,visit,paraclinick,breathe,phistory,jhistory,ear,
-	limitation,doctorVisit;
+	limitation,doctorVisit,search;
 	int pageLength=960;
 	int pageHeight=650;
 	Connect myConnect;
@@ -53,8 +53,8 @@ public class MainPage extends JFrame implements ActionListener{
 		employeeInformation.addActionListener(this);
 		getContentPane().add(employeeInformation);
 		
-		ImageIcon img2=new ImageIcon("File-icon.png");
-		employeemedical=new JButton("پرونده پزشکی شاغل",img2);
+		//ImageIcon img2=new ImageIcon("File-icon.png");
+		employeemedical=new JButton("آدرس اکسس");
 		employeemedical.setBackground(new Color(235, 235, 235));
 		//employeemedical.setBorderPainted(false);
 		employeemedical.setSize(200, 50);
@@ -126,6 +126,14 @@ public class MainPage extends JFrame implements ActionListener{
 		ear.addActionListener(this);
 		getContentPane().add(ear);
 		
+		search=new JButton("جستجو");
+		search.setBackground(new Color(235, 235, 235));
+		//ear.setBorderPainted(false);
+		search.setSize(200, 50);
+		search.setLocation(630, 190);
+		search.addActionListener(this);
+		getContentPane().add(search);
+		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
@@ -192,6 +200,9 @@ public class MainPage extends JFrame implements ActionListener{
 		}
 		else if(b==ear){
 			new Visit(this, myConnect,ear.getText());
+		}
+		else if(b==search){
+			new Search(myConnect);
 		}
 	}
 
