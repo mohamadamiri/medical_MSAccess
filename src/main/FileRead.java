@@ -17,6 +17,7 @@ public class FileRead {
 			try {
 				f.createNewFile();
 			} catch (IOException e) {
+				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, e.toString());
 			}
 		}
@@ -35,8 +36,10 @@ public class FileRead {
 			br.close();
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(null, e.toString());
+			e.printStackTrace();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, e.toString());
+			e.printStackTrace();
 		}
 	}
 

@@ -1,8 +1,6 @@
 package main;
 
-import java.awt.List;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -241,7 +239,8 @@ public class Connect{
 					JOptionPane.showMessageDialog(null, "you didn't choose a database");
 				else
 	           con = DriverManager.getConnection("jdbc:ucanaccess://"+dbpath, "", "");
-	            /*Statement stmt = con.createStatement();
+	           
+				/*Statement stmt = con.createStatement();
 	            System.out.println(System.currentTimeMillis() - time);
 	            rs = stmt.executeQuery("select * from User");
 	            
@@ -256,6 +255,7 @@ public class Connect{
 	        }
 	        catch (SQLException ex)
 	        {
+	        	ex.printStackTrace();
 	        	JOptionPane.showMessageDialog(null, ex.toString());
 	        }
 		}
